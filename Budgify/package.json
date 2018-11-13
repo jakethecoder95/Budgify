@@ -1,0 +1,39 @@
+{
+  "name": "budgify",
+  "version": "1.0.0",
+  "description": "budgit application",
+  "main": "test.js",
+  "scripts": {
+    "dev": "webpack --mode development && node ./src/server/test.js",
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server && node /src/server/test.js"
+  },
+  "author": "Jacob Robinson",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "grunt": "^1.0.3",
+    "grunt-contrib-jshint": "^2.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "mocha": "^5.2.0",
+    "rimraf": "^2.6.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-register": "^6.26.0",
+    "express": "^4.16.4",
+    "file-match": "^1.0.2",
+    "file-system": "^2.2.2",
+    "morgan": "^1.9.1",
+    "tedious": "^3.0.1",
+    "utils-extend": "^1.0.8",
+    "webpack": "^4.25.1",
+    "webpack-node-externals": "^1.7.2"
+  }
+}

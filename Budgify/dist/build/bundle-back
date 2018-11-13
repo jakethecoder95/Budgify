@@ -1,0 +1,122 @@
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./src/test.js":
+/*!*********************!*\
+  !*** ./src/test.js ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("﻿fs = __webpack_require__(/*! fs */ \"fs\");\r\n\r\nconsole.log('working');\r\nfs.appendFile('./es6/data.json', 'Hello content!', function (err) {\r\n    if (err) throw err;\r\n    console.log('Saved!');\r\n});\n\n//# sourceURL=webpack:///./src/test.js?");
+
+/***/ }),
+
+/***/ 0:
+/*!***************************!*\
+  !*** multi ./src/test.js ***!
+  \***************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("module.exports = __webpack_require__(/*! ./src/test.js */\"./src/test.js\");\n\n\n//# sourceURL=webpack:///multi_./src/test.js?");
+
+/***/ }),
+
+/***/ "fs":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** external {"constants":{"O_RDONLY":0,"O_WRONLY":1,"O_RDWR":2,"S_IFMT":61440,"S_IFREG":32768,"S_IFDIR":16384,"S_IFCHR":8192,"S_IFLNK":40960,"O_CREAT":256,"O_EXCL":1024,"O_TRUNC":512,"O_APPEND":8,"F_OK":0,"R_OK":4,"W_OK":2,"X_OK":1,"UV_FS_COPYFILE_EXCL":1,"COPYFILE_EXCL":1},"F_OK":0,"R_OK":4,"W_OK":2,"X_OK":1,"fs":{"constants":{"O_RDONLY":0,"O_WRONLY":1,"O_RDWR":2,"S_IFMT":61440,"S_IFREG":32768,"S_IFDIR":16384,"S_IFCHR":8192,"S_IFLNK":40960,"O_CREAT":256,"O_EXCL":1024,"O_TRUNC":512,"O_APPEND":8,"F_OK":0,"R_OK":4,"W_OK":2,"X_OK":1,"UV_FS_COPYFILE_EXCL":1,"COPYFILE_EXCL":1},"F_OK":0,"R_OK":4,"W_OK":2,"X_OK":1}} ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("module.exports = undefined;\n\n//# sourceURL=webpack:///external_%7B%22constants%22:%7B%22O_RDONLY%22:0,%22O_WRONLY%22:1,%22O_RDWR%22:2,%22S_IFMT%22:61440,%22S_IFREG%22:32768,%22S_IFDIR%22:16384,%22S_IFCHR%22:8192,%22S_IFLNK%22:40960,%22O_CREAT%22:256,%22O_EXCL%22:1024,%22O_TRUNC%22:512,%22O_APPEND%22:8,%22F_OK%22:0,%22R_OK%22:4,%22W_OK%22:2,%22X_OK%22:1,%22UV_FS_COPYFILE_EXCL%22:1,%22COPYFILE_EXCL%22:1%7D,%22F_OK%22:0,%22R_OK%22:4,%22W_OK%22:2,%22X_OK%22:1,%22fs%22:%7B%22constants%22:%7B%22O_RDONLY%22:0,%22O_WRONLY%22:1,%22O_RDWR%22:2,%22S_IFMT%22:61440,%22S_IFREG%22:32768,%22S_IFDIR%22:16384,%22S_IFCHR%22:8192,%22S_IFLNK%22:40960,%22O_CREAT%22:256,%22O_EXCL%22:1024,%22O_TRUNC%22:512,%22O_APPEND%22:8,%22F_OK%22:0,%22R_OK%22:4,%22W_OK%22:2,%22X_OK%22:1,%22UV_FS_COPYFILE_EXCL%22:1,%22COPYFILE_EXCL%22:1%7D,%22F_OK%22:0,%22R_OK%22:4,%22W_OK%22:2,%22X_OK%22:1%7D%7D?");
+
+/***/ })
+
+/******/ });

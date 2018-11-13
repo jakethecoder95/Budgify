@@ -1,0 +1,17 @@
+﻿@using Budgify.Models
+@model RegisterViewModel
+<div class="inputs__div">
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal loginForm", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <b class="x fa fa-times"></b>
+        <h1>Budgify</h1>
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control login__input email", @placeholder = "Email" })
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control login__input password", @placeholder = "Password" })
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control login__input confirm-psw", @placeholder = "Confirm Password" })
+
+        <button class="btn-user-submit" type="submit" value="Register">Sign up</button>
+        @Html.ValidationSummary("", new { @class = "error__message--login" })
+        <p class="login-type">Already have an account? @Html.ActionLink("Log in", "Login", "Account")</p>
+    }
+</div>
