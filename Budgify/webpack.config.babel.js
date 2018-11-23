@@ -61,4 +61,4 @@ frontConfig = {
     }
 }
 
-module.exports = [frontConfig, backConfig];
+module.exports = frontConfig;

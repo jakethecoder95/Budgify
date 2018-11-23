@@ -3,7 +3,6 @@ import * as storageView from './View/storageView';
 import * as StorageController from './Model/Storage';
 
 const user = login.activeUser();
-console.log(user);
 
 // Budget Controller
 var budgetController = (function () {
@@ -1160,7 +1159,6 @@ var Controller = (function (budgetCtrl, UICtrl) {
         let incArr, expArr;
 
         if (localStorage.getItem(user) && localStorage.getItem(user) !== "") {
-            console.log(localStorage.getItem(user));
             incArr = StorageController.getDataInc(user);
             expArr = StorageController.getDataExp(user);
 

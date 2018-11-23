@@ -2,7 +2,6 @@
   "name": "budgify",
   "version": "1.0.0",
   "description": "budgit application",
-  "main": "test.js",
   "scripts": {
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
