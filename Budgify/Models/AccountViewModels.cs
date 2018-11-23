@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNet.Identity;
 
 namespace Budgify.Models
 {
@@ -63,7 +64,7 @@ namespace Budgify.Models
     }
 
     public class RegisterViewModel
-    {
+    {   
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
@@ -79,6 +80,9 @@ namespace Budgify.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public string inc { get; set; }
+        public string exp { get; set; }
     }
 
     public class ResetPasswordViewModel
@@ -100,6 +104,17 @@ namespace Budgify.Models
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
+    }
+
+    public class ResetIncExpViewModel
+    {
+        [Key]
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        public string inc { get; set; }
+        public string exp { get; set; }
     }
 
     public class ForgotPasswordViewModel

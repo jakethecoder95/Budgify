@@ -4,9 +4,9 @@
   "description": "budgit application",
   "main": "test.js",
   "scripts": {
-    "dev": "webpack --mode development && node ./src/server/test.js",
+    "dev": "webpack --mode development",
     "build": "webpack --mode production",
-    "start": "webpack-dev-server && node /src/server/test.js"
+    "start": "webpack-dev-server"
   },
   "author": "Jacob Robinson",
   "license": "ISC",

@@ -1,6 +1,4 @@
 ﻿import * as login from './View/login';
-import * as storageView from './View/storageView';
-import * as StorageController from './Model/Storage';
 
 const user = login.activeUser();
 console.log(user);
@@ -267,7 +265,7 @@ var UIController = (function () {
         detailsContainer: '.details__container',
         row: '.row',
         header: '.header',
-        details: '.details',
+        details: '.details'
 
     }
 
@@ -791,31 +789,20 @@ var Controller = (function (budgetCtrl, UICtrl) {
     var setupEventListenters = function () {
         var DOM = UICtrl.getDOMstrings();
 
-        window.addEventListener('beforeunload', () => {
-            storageView.submitData(user);
-        });
-
         // Clear form when user hits "X"
         document.querySelector('.login__container').addEventListener('click', e => {
             if (e.target.matches('.x')) login.clearForm();
         });
 
         // Call addItems
-        document.querySelector(DOM.inputBtn, `${DOM.inputBtn} *`).addEventListener('click', () => {
-            ctrlAddItem();
-            storageView.submitData(user);
-            if (document.querySelector('.add__type').selectedIndex === 0) {
-                StorageController.updataInputTracker('inc');
-            } else StorageController.updataInputTracker('exp');
-        });
+        document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem);
 
         document.addEventListener('keypress', function (event) {
+
             if (event.keyCode === 13 || event.which === 13) {
-                ctrlAddItem(); storageView.submitData(user);
-                if (document.querySelector('.add__type').selectedIndex === 0) {
-                    StorageController.updataInputTracker('inc');
-                } else StorageController.updataInputTracker('exp');
+                ctrlAddItem();
             }
+
         });
 
         // Call deleteItems
@@ -830,15 +817,15 @@ var Controller = (function (budgetCtrl, UICtrl) {
         document.querySelector(DOM.forwardBtn).addEventListener('click', UICtrl.slideToNextSection);
         document.querySelector(DOM.backBtn).addEventListener('click', UICtrl.slideToNextSection);
 
-        //document.addEventListener('keydown', function (event) {
-        //
-        //    if (event.keyCode === 39 || event.which === 39 ||
-        //        event.keyCode === 37 || event.which === 37) {
-        //
-        //        UICtrl.slideToNextSection();
-        //        ctrlRenderChart();
-        //    }
-        //});
+        document.addEventListener('keydown', function (event) {
+
+            if (event.keyCode === 39 || event.which === 39 ||
+                event.keyCode === 37 || event.which === 37) {
+
+                UICtrl.slideToNextSection();
+                ctrlRenderChart();
+            }
+        });
 
         // Doughnut chart
         document.querySelector(DOM.forwardBtn).addEventListener('click', function () {
@@ -881,7 +868,7 @@ var Controller = (function (budgetCtrl, UICtrl) {
         });
 
     }
- 
+
     var updateBudget = function () {
         // 1. Calculate the budget
         budgetCtrl.calculateBudget();
@@ -952,12 +939,11 @@ var Controller = (function (budgetCtrl, UICtrl) {
         return node;
     }
 
-    var ctrlAddItem = function (inputArg = null, ty = null) {
+    var ctrlAddItem = function () {
         var input, newItem;
 
         // 1. Get the feild input data 
-        inputArg === null ? input = UICtrl.getInput() : input = inputArg;
-        inputArg !== null ? input.type = ty : null; 
+        input = UICtrl.getInput();
 
         if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
 
@@ -985,9 +971,6 @@ var Controller = (function (budgetCtrl, UICtrl) {
             }
             // 8. Update details page if active
             updateDetails();
-
-            // 9. Persist data
-            inputDB()
         }
     };
 
@@ -1030,14 +1013,9 @@ var Controller = (function (budgetCtrl, UICtrl) {
             // 6. Update details page if active
             updateDetails();
 
-            // 7. Check value status' and update storage
             checkValueStatus();
 
-            // 8. Submit to storage
-            inputDB();
-            storageView.submitData(user);
         }
-        
     };
 
     var ctrlRenderChart = function () {
@@ -1120,72 +1098,6 @@ var Controller = (function (budgetCtrl, UICtrl) {
 
     }
 
-
-    /****************************************
-     * 
-     * Storage Controllers
-     * 
-     ****************************************/
-
-    // INITIALIZE Data items on page Load
-    const addStorageItems = () => {
-        // Check user exists in localStorage and initialize user if he/she doesnt.
-        StorageController.checkUserInit(user);
-
-        // Render non-user items
-        renderNoUserItems();
-
-        // Render user items
-        renderUserItems();
-    }
-
-    // RENDER all Items that were stored before user logged in
-    const renderNoUserItems = () => {
-        let noUserInc, noUserExp;
-
-        if (localStorage.getItem(false) && localStorage.getItem(false) !== "" && user !== false) {
-            noUserInc = StorageController.getDataInc(false);
-            noUserExp = StorageController.getDataExp(false);
-
-            if (noUserInc[0]) noUserInc.forEach(el => ctrlAddItem(el, 'inc'));
-            if (noUserExp[0]) noUserExp.forEach(el => ctrlAddItem(el, 'exp'));
-
-            // Get rid of non-user value
-            StorageController.removeUser(false);
-        }
-    }
-
-    // RENDER all Items if user is signed in and has not just been initialize
-    const renderUserItems = () => {
-        let incArr, expArr;
-
-        if (localStorage.getItem(user) && localStorage.getItem(user) !== "") {
-            console.log(localStorage.getItem(user));
-            incArr = StorageController.getDataInc(user);
-            expArr = StorageController.getDataExp(user);
-
-            if (incArr[0]) incArr.forEach(el => ctrlAddItem(el, 'inc'));
-            if (expArr[0]) expArr.forEach(el => ctrlAddItem(el, 'exp'));
-        }
-    }
-
-    // SUBMIT data to database
-    const inputDB = () => {
-        if (user) {
-            let dataInc, dataExp;
-
-            // Update localStorage
-            StorageController.persistData(user, budgetCtrl.testing().allItemes);
-
-            // Get user data
-            dataInc = JSON.stringify(StorageController.getDataInc(user));
-            dataExp = JSON.stringify(StorageController.getDataExp(user));
-
-            // Insert data to its input element
-            storageView.inputData(dataInc, dataExp);
-        }
-    }    
-
     return {
         testing: function () { ctrlUpdateDetails('misc') },
         init: function () {
@@ -1196,12 +1108,8 @@ var Controller = (function (budgetCtrl, UICtrl) {
                 totalInc: 0,
                 totalExp: 0,
                 percentSpent: -1
-            });
-            addStorageItems();
-            inputDB();
-            ctrlRenderChart();
+            })
             setupEventListenters();
-            storageView.initPrevType(UICtrl)
         }
     }
 

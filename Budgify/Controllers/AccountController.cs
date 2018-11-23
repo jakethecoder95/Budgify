@@ -1,14 +1,14 @@
-﻿using System;
-using System.Globalization;
+﻿using Budgify.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Budgify.Models;
 
 namespace Budgify.Controllers
 {
@@ -70,7 +70,7 @@ namespace Budgify.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View();
             }
 
             // This doesn't count login failures towards account lockout
@@ -87,7 +87,7 @@ namespace Budgify.Controllers
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                    return View("ResetIncExp", "Account", model);
             }
         }
 
@@ -151,7 +151,7 @@ namespace Budgify.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, inc = "[]", exp = "[]" };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -163,7 +163,7 @@ namespace Budgify.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("ResetIncExp", "Account");
                 }
                 AddErrors(result);
             }
@@ -226,6 +226,39 @@ namespace Budgify.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
+            return View();
+        }
+
+        //
+        // Get
+        [AllowAnonymous]
+        public ActionResult ResetIncExp()
+        {
+            return View();
+        }
+
+        //
+        // Post?
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetIncExp(ResetIncExpViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var store = new UserStore<ApplicationUser>(new MyDbContext());
+                var user = await UserManager.FindByEmailAsync(model.Email);
+
+                user.inc = model.inc;
+                user.exp = model.exp;
+         
+                // Update user address
+                await UserManager.UpdateAsync(user);
+
+                var ctx = store.Context;
+                ctx.SaveChanges();
+            }
+
             return View();
         }
 
@@ -449,7 +482,7 @@ namespace Budgify.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("ResetIncExp", "Account");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

@@ -13,6 +13,7 @@
         @Html.PasswordFor(m => m.Password, new { @class = "form-control login__input password", @placeholder = "Password" })
 
         <button class="btn-user-submit" type="submit" value="Log in">Login</button>
+        @Html.ValidationSummary("", new { @class = "error__message--login" })
         <p class="login-type">Dont have an account? @Html.ActionLink("sign up", "Register", "Account")</p>
     }
 </div>
@@ -20,4 +21,5 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
 

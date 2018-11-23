@@ -1059,7 +1059,11 @@ form a:hover {
     font-size: 20px;
     cursor: pointer;
 }
+    
+.x:hover {
+    color: rgba(70, 70, 70, .6)
+}
 
-    .x:hover {
-        color: rgba(70, 70, 70, .6)
-    }
+.data-form {
+    display: none;
+}

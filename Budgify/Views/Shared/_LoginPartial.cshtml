@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNet.Identity
+@using Budgify.Models
+
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
@@ -7,6 +9,7 @@
 
         <a class="usernameActive">@User.Identity.GetUserName()</a>
         <a id="btn__logoff" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+
     }
 }
 else
