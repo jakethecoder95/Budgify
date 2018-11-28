@@ -10,11 +10,15 @@
         <b class="x fa fa-times"></b>
         <h1>Budgify</h1>
         @Html.TextBoxFor(m => m.Email, new { @class = "form-control login__input email", @placeholder = "Email" })
+        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "error__message--login" })
+
         @Html.PasswordFor(m => m.Password, new { @class = "form-control login__input password", @placeholder = "Password" })
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "error__message--login" })
 
         <button class="btn-user-submit" type="submit" value="Log in">Login</button>
         @Html.ValidationSummary("", new { @class = "error__message--login" })
         <p class="login-type">Dont have an account? @Html.ActionLink("sign up", "Register", "Account")</p>
+
     }
 </div>
 

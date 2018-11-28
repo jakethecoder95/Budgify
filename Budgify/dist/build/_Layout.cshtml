@@ -236,98 +236,12 @@
     </div>
     <div class="login__container">
         @using Budgify.Models
-        <!--
-        <div class="inputs__div">
-            //model LoginViewModel
-            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
-            {
-
-                @Html.AntiForgeryToken()
-                <h1>Budgify</h1>
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control login__input email", @placeholder = "Email" })
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control login__input password", @placeholder = "Password" })
-
-                <button class="btn-user-submit" type="submit" value="Log in">Login</button>
-                <p class="login-type">Dont have an account? <a>sign up</a></p>
-            }
-        </div>
-        -->
-        <!--
-            <div class="inputs__div">
-
-            @model RegisterViewModel
-
-            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal loginForm", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                <h1>Budgify</h1>
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control login__input email", @placeholder = "Email" })
-                @Html.PasswordFor(m => m.Password, new { @class = "form-control login__input password", @placeholder = "Password" })
-                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control login__input confirm-psw", @placeholder = "Confirm Password" })
-
-                <button class="btn-user-submit" type="submit" value="Register">Sign up</button>
-                @Html.ValidationSummary("", new { @class = "error__message--login" })
-                <p class="login-type">Dont have an account? <a>sign in</a></p>
-            }
-        </div>
-        -->
         @RenderBody()
+        @RenderSection("scripts", required: false)
     </div>
 
     <script src="~/dist/build/bundle.js"></script>
-    <!--
-    <script src="~/Scripts/es6/script.js"></script>
-    <script src="~/Scripts/es/login.js"></script>
-    -->
 <script type="text/javascript" src="bundle.js"></script></body>
 
 </html>
 
-
-
-<!--
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
-
-</head>
-<body>
-<div class="navbar navbar-inverse navbar-fixed-top">
-<div class="container">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-    </div>
-    <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-            <li>@Html.ActionLink("About", "About", "Home")</li>
-            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-        </ul>
-        @Html.Partial("_LoginPartial")
-    </div>
-</div>
-</div>
-<div class="container body-content">
-    <hr />
-    <footer>
-        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-    </footer>
-</div>
-
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-@RenderSection("scripts", required: false)
-
-</body>
-</html>
--->

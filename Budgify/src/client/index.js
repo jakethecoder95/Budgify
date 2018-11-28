@@ -270,9 +270,23 @@ var UIController = (function () {
 
     }
 
+    var addCommas = function (num) {
+        let newNum = [];
+        num = num.split('');
+
+        for (let i = num.length; i > 0; i -= 3) {
+            if (i - 3 < 1) {
+                newNum.unshift(num.slice(0, i).join(''));
+            } else {
+                newNum.unshift(num.slice(i - 3, i).join(''));
+                newNum.unshift(',');
+            }
+        }
+        return newNum.join('');
+    }
+
     var formatNumber = function (num, type) {
         var numSplit, int, dec, sign;
-
         /*
         + or - before number 
         exactly 2 decimal points
@@ -286,7 +300,7 @@ var UIController = (function () {
 
         int = numSplit[0];
         if (int.length > 3) {
-            int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3); //input 2310, output 2,310
+            int = addCommas(int); // 189468 to 189,468
         }
 
         dec = numSplit[1];
@@ -485,7 +499,7 @@ var UIController = (function () {
         },
 
         hideOverflowItems: function () {
-            var containerList, loops, plusBTN;
+            var containerList, loops, plusHTML, minusBTN;
 
             // Remove minus button
             minusBTN = document.querySelector('.minus-icon');
@@ -802,23 +816,28 @@ var Controller = (function (budgetCtrl, UICtrl) {
         // Call addItems
         document.querySelector(DOM.inputBtn, `${DOM.inputBtn} *`).addEventListener('click', () => {
             ctrlAddItem();
-            storageView.submitData(user);
             if (document.querySelector('.add__type').selectedIndex === 0) {
-                StorageController.updataInputTracker('inc');
-            } else StorageController.updataInputTracker('exp');
+                StorageController.updateInputTracker('inc');
+            } else StorageController.updateInputTracker('exp');
+
+            // Check input values before submiting form
+            storageView.checkInputFields() ? storageView.submitData(user) : null;
         });
 
         document.addEventListener('keypress', function (event) {
             if (event.keyCode === 13 || event.which === 13) {
-                ctrlAddItem(); storageView.submitData(user);
+                ctrlAddItem();
                 if (document.querySelector('.add__type').selectedIndex === 0) {
-                    StorageController.updataInputTracker('inc');
-                } else StorageController.updataInputTracker('exp');
+                    StorageController.updateInputTracker('inc');
+                } else StorageController.updateInputTracker('exp');
+
+                // Check input values before submiting form
+                storageView.checkInputFields() ? storageView.submitData(user) : null;
             }
         });
 
         // Call deleteItems
-        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+        document.querySelector(DOM.container).addEventListener('click', () => ctrlDeleteItem(event, true));
         document.querySelector(DOM.details).addEventListener('click', ctrlDeleteItem);
 
 
@@ -854,10 +873,12 @@ var Controller = (function (budgetCtrl, UICtrl) {
             plusBTN = document.querySelector('.plus-icon');
             minusBTN = document.querySelector('.minus-icon');
 
-            if (event.path[1] === plusBTN) {
-                UICtrl.showOverflowItems();
-            } else if (event.path[1] === minusBTN) {
-                UICtrl.hideOverflowItems();
+            if (plusBTN) {
+                if (event.target === plusBTN || event.target === plusBTN.firstChild) {
+                    UICtrl.showOverflowItems();
+                }
+            } else if (event.target === minusBTN || event.target === minusBTN.firstChild) {
+                    UICtrl.hideOverflowItems();
             }
         });
 
@@ -937,16 +958,11 @@ var Controller = (function (budgetCtrl, UICtrl) {
 
     var getNode = function (e) {
         var node;
-
-        if (event.path[2].classList[0] === 'row') {
-            node = event.path[2];
-        } else if (event.path[1].classList[0] === 'row') {
-            node = event.path[1];
-        } else if (event.path[0].classList[0] === 'row') {
-            node = event.path[0];
-        } else {
-            node = null;
-        }
+        
+        if (e.target.classList[0] === 'row') node = e.target;
+        else if (e.target.parentNode.classList[0] === 'row') node = e.target.parentNode;
+        else if (e.target.parentNode.parentNode.classList[0]) node = e.target.parentNode.parentNode;
+        else node = null;
 
         return node;
     }
@@ -969,8 +985,8 @@ var Controller = (function (budgetCtrl, UICtrl) {
                 UICtrl.addCatagory(newItem.id, newItem.catagory);
             }
 
-            // 4. Clear the fields
-            UICtrl.clearFields();
+            // 4. Clear input fields if no user Logged in
+            if (!user) UICtrl.clearFields();
 
             // 5. Calculate and update budget
             updateBudget();
@@ -990,7 +1006,7 @@ var Controller = (function (budgetCtrl, UICtrl) {
         }
     };
 
-    var ctrlDeleteItem = function (event) {
+    var ctrlDeleteItem = function (event, submit = false) {
         var itemID, splitID, type, ID, cat, eventClassList, val, valElm, valArr;
 
         itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
@@ -1034,7 +1050,9 @@ var Controller = (function (budgetCtrl, UICtrl) {
 
             // 8. Submit to storage
             inputDB();
-            storageView.submitData(user);
+            if (submit) {
+                storageView.submitData();
+            }
         }
         
     };
@@ -1130,28 +1148,9 @@ var Controller = (function (budgetCtrl, UICtrl) {
     const addStorageItems = () => {
         // Check user exists in localStorage and initialize user if he/she doesnt.
         StorageController.checkUserInit(user);
-
-        // Render non-user items
-        renderNoUserItems();
-
+        
         // Render user items
         renderUserItems();
-    }
-
-    // RENDER all Items that were stored before user logged in
-    const renderNoUserItems = () => {
-        let noUserInc, noUserExp;
-
-        if (localStorage.getItem(false) && localStorage.getItem(false) !== "" && user !== false) {
-            noUserInc = StorageController.getDataInc(false);
-            noUserExp = StorageController.getDataExp(false);
-
-            if (noUserInc[0]) noUserInc.forEach(el => ctrlAddItem(el, 'inc'));
-            if (noUserExp[0]) noUserExp.forEach(el => ctrlAddItem(el, 'exp'));
-
-            // Get rid of non-user value
-            StorageController.removeUser(false);
-        }
     }
 
     // RENDER all Items if user is signed in and has not just been initialize
@@ -1169,19 +1168,17 @@ var Controller = (function (budgetCtrl, UICtrl) {
 
     // SUBMIT data to database
     const inputDB = () => {
-        if (user) {
-            let dataInc, dataExp;
+        let dataInc, dataExp;
 
-            // Update localStorage
-            StorageController.persistData(user, budgetCtrl.testing().allItemes);
+        // Update localStorage
+        StorageController.persistData(user, budgetCtrl.testing().allItemes);
 
-            // Get user data
-            dataInc = JSON.stringify(StorageController.getDataInc(user));
-            dataExp = JSON.stringify(StorageController.getDataExp(user));
+        // Get user data
+        dataInc = JSON.stringify(StorageController.getDataInc(user));
+        dataExp = JSON.stringify(StorageController.getDataExp(user));
 
-            // Insert data to its input element
-            storageView.inputData(dataInc, dataExp);
-        }
+        // Insert data to its input element
+        storageView.inputData(dataInc, dataExp);
     }    
 
     return {

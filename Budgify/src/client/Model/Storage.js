@@ -5,7 +5,8 @@ export const checkUserInit = (user) => {
     const lastUser = localStorage.getItem('userTracker')
 
     // Returns true if the user is not equal to the last user and false if its the same
-    const justLoggedIn = (user !== lastUser);
+    let justLoggedIn;
+    user === false ? justLoggedIn = false : justLoggedIn = (user !== lastUser);
 
     // Change userTracker
     localStorage.setItem('userTracker', user);
@@ -20,8 +21,8 @@ export const checkUserInit = (user) => {
 
 // To be called in checkUserInit.  Will retrieve existing DB if it doesnt exist in localStorage
 const checkNewUserDB = (user, changed) => {
-    if (user && changed) {
-        localStorage.setItem(user, `{"inc": ${getIncDB()}, "exp": ${getExpDB()}}`);
+    if (changed) {
+        localStorage.setItem(user, `{"inc": ${getIncDB}, "exp": ${getExpDB}}`);
     }
 };
 
@@ -47,6 +48,7 @@ export const removeUser = (user) => {
     localStorage.removeItem(user)
 };
 
-export const updataInputTracker = (type) => {
+// Update most recent input 
+export const updateInputTracker = (type) => {
     localStorage.setItem('inputTracker', type);
 }
